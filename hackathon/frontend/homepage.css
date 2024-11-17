@@ -1,0 +1,161 @@
+main {
+    flex-grow: 1; /* Allow the content to take up the remaining space */
+    overflow-y: auto; /* Enable scrolling when content overflows */
+}
+
+.viewmore {
+    width: 30px;
+    color: white;
+}
+.logo {
+    width: 70px;
+    color: white;
+}
+
+.profile {
+    width: 30px;
+    color: white;
+}
+
+.cart {
+    width: 30px;
+    color: white;
+}
+
+h6 {
+    color: white;
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 355px;
+    padding: 10px;
+    background-color: rgb(6, 66, 43); /* Same background color as the header */
+    margin-top: -10px; /* Move the search container slightly up (negative margin) */
+
+}
+
+/* The actual input field */
+.search-input {
+    width: 100%;  /* Full width of the container */
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 10px;  /* Rounded corners */
+    outline: none;
+}
+
+/* Style for the search button/icon */
+.search-button {
+    background-color: #a93273;  /* Purple background */
+    border: none;
+    padding: 8px 11px;
+    margin-left: -45px; /* Move the icon close to the input */
+    border-radius: 20%;
+    cursor: pointer;
+}
+
+.search-button .search-icon {
+    font-size: 20px;
+    color: white;
+}
+
+.search-button:hover {
+    background-color: #da1b84;
+}
+
+header {
+    display: flex;                    /* Enable Flexbox on the header */
+    justify-content: space-between;    /* Distribute space between the left and right sections */
+    align-items: center;   
+    background-color: rgb(6, 66, 43); 
+    padding-inline: 15px;
+}
+
+.header-left {
+    display: flex;  
+    align-items: center;  
+    justify-content: flex-start;
+    padding: 0px;    
+    margin: 0px;   
+}
+
+.header-right {
+    display: flex;
+    justify-content: flex-end;    /* Align child (ul) at the end (right) */
+    align-items: center;  
+    margin: 0px;   
+}
+
+.header-right h6 {
+    margin-right: 1px;  /* Space between text and the next icon */
+    cursor: pointer;
+}
+
+.profile, .cart {
+    margin-left: 10px;  /* Space between icons */
+    cursor: pointer;
+    width: 24px;  /* Icon size */
+}
+
+.poster {
+    width: 375px;
+    background: linear-gradient(to bottom, pink, white);
+
+}
+
+.recommended-cloths {
+    display: grid;               /* Use CSS Grid layout */
+    grid-template-columns: repeat(2, 1fr); /* Create 2 columns with equal width */
+    gap: 10px;                   /* Add space between the items */
+    justify-items: center;       /* Center images horizontally */
+    align-items: center;         /* Center images vertically */
+}
+
+.product {
+    display: flex;               /* Use Flexbox inside each product container */
+    flex-direction: column;      /* Stack image and text vertically */
+    align-items: center;         /* Center content horizontally */
+    text-align: center;          /* Center text inside the product */
+    width: 160px;            /* Optional: limit the maximum width of each product */
+    border: 1px solid #ddd;      /* Optional: add a border around each product */
+    padding: 10px;               /* Optional: add some padding inside each product */
+    border-radius: 10px;         /* Optional: round the corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: add some shadow */
+    background-color: white;
+}
+
+.product:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.379); 
+}
+
+h3{
+    padding-left: 15px;
+}
+
+h4 {
+    font-size: 1rem;
+    font-family: 'Merriweather', serif;
+
+}
+
+p {
+    font-size: 0.8rem;
+    font-family: 'Merriweather', serif;
+}
+
+.recommended-cloths{
+    margin: 20px;
+}
+
+/* Make sure all images are the same size */
+.Clothing {
+    margin-top: 20px;
+    width: 100px;
+    object-fit: cover;   /* Ensures image fills the circle properly without stretching */}
+    max-width: 200px;            /* Optional: set a max-width for each image */
+    object-fit: cover;           /* Ensure the image covers the container without distortion */
+    border-radius: 10px;         /* Optional: add rounded corners to the images */
+}

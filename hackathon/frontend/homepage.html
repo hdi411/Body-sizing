@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./homepage.css" rel="stylesheet" />
+    <title>Amazon Homepage</title>
+    <style>
+        /* Main container simulating a phone screen */
+        .phone-frame {
+            width: 100%;
+            max-width: 375px; /* Typical mobile screen width */
+            height: 710px; /* Typical mobile screen height */
+            margin: auto;
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+      
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        /* Main Content */
+        .content {
+            flex-grow: 1;  /* Allow the content to take up the remaining space */
+            overflow-y: auto;  /* Make content scrollable */
+            flex-grow: 1;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Button styling */
+        button {
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        /* Media Query to ensure mobile view on small screens */
+        @media (max-width: 375px) {
+            .header h1 {
+                font-size: 16px;
+            }
+            .content h2 {
+                font-size: 20px;
+            }
+            .content p {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+    <div class="phone-frame">
+        <header>
+            <nav class="header-left">
+                <svg class="viewmore" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>              
+                <img class="logo" src="./images/amazonlogo.png" alt="logo"/>
+            </nav>
+            <nav class="header-right">
+                <h6> Sign in </h6>
+                <svg class="profile" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                  </svg>
+                  <svg class="cart" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                  </svg>                  
+            </nav>
+        </header>
+        <main>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search...">
+                <button class="search-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" role="img" viewBox="0 0 24 24" width="24" height="24" data-icon="MagnifyingGlassStandard" aria-hidden="true" class="search-icon"><path fill-rule="evenodd" clip-rule="evenodd" d="M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10ZM15.6177 17.0319C14.078 18.2635 12.125 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10C19 12.125 18.2635 14.078 17.0319 15.6177L22.7071 21.2929L21.2929 22.7071L15.6177 17.0319Z" fill="currentColor"></path></svg>
+                </button>
+            </div>
+            <img class="poster" src="./images/Poster.jpg" alt="Poster">
+            <h3>Recommended For You</h3>
+            <div class="recommended-cloths">
+                <button class="product" onclick="window.location.href='NarecteDress.html';">
+                    <img class="Clothing" src="./images/NarecteDress.jpg" alt="logo"/>
+                    <h4>Narecte</h4>
+                    <p>Narecte Summer Dresses for Women</p>
+                    <p>$36.99</p>
+                </button>
+                <button class="product" onclick="window.location.href='ABAFIP.html';">
+                    <img class="Clothing" src="./images/ABAFIP.jpg" alt="logo"/>
+                    <h4>ABAFIP</h4>
+                    <p>ABAFIP Women's Corset Mini Dress</p>
+                    <p>$40.99</p>
+                </button>
+                <button class="product">
+                    <img class="Clothing" src="./images/Peixoto.jpg" alt="logo"/>
+                    <h4>Peixoto</h4>
+                    <p>Peixoto Women's Louisa Crop Top</p>
+                    <p>$61.60</p>
+                </button>
+                <button class="product">
+                    <img class="Clothing" src="./images/BeyondYogaMarmalade.jpg" alt="logo"/>
+                    <h4>Beyond Yoga</h4>
+                    <p>Women's Spacedye Slim Racerback Tank</p>
+                    <p>$33.90 </p>
+                </button>
+                <button class="product" onclick="window.location.href='AmazonEssential.html';">
+                    <img class="Clothing" src="./images/CamelHeather.jpg" alt="logo"/>
+                    <h4>Amazon Essentials</h4>
+                    <p>Amazon Essentials Men's Quarter-Zip French Rib Sweater</p>
+                    <p>$61.60</p>
+                </button>
+                <button class="product">
+                    <img class="Clothing" src="./images/PJApricot.jpg" alt="logo"/>
+                    <h4>PJ Apricot</h4>
+                    <p>PJ PAUL JONES Crewneck Knit Mens Sweater</p>
+                    <p>$39.99</p>
+                </button>
+                <button class="product">
+                    <img class="Clothing" src="./images/SetActive.jpg" alt="logo"/>
+                    <h4>Set Active</h4>
+                    <p>Women's Sportbody Bike Shorts</p>
+                    <p>$65.00</p>
+                </button>
+                <button class="product">
+                    <img class="Clothing" src="./images/DL1961.jpg" alt="logo"/>
+                    <h4>DL1961</h4>
+                    <p>Women's Hepburn Wide Coated Jeans</p>
+                    <p>$239.00</p>
+                </button>
+            </div>
+        </main>
+    </div>
+</html>

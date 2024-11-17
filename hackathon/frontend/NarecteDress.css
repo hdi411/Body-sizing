@@ -1,0 +1,285 @@
+.viewmore {
+    width: 30px;
+    color: white;
+}
+.logo {
+    width: 70px;
+    color: white;
+}
+
+.profile {
+    width: 30px;
+    color: white;
+}
+
+.cart {
+    width: 30px;
+    color: white;
+}
+
+h6 {
+    color: white;
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 355px;
+    padding: 10px;
+    background-color: rgb(6, 66, 43); /* Same background color as the header */
+    margin-top: -10px; /* Move the search container slightly up (negative margin) */
+
+}
+
+/* The actual input field */
+.search-input {
+    width: 100%;  /* Full width of the container */
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 10px;  /* Rounded corners */
+    outline: none;
+}
+
+/* Style for the search button/icon */
+.search-button {
+    background-color: #a93273;  /* Purple background */
+    border: none;
+    padding: 8px 11px;
+    margin-left: -45px; /* Move the icon close to the input */
+    border-radius: 20%;
+    cursor: pointer;
+}
+
+.search-button .search-icon {
+    font-size: 20px;
+    color: white;
+}
+
+.search-button:hover {
+    background-color: #da1b84;
+}
+
+header {
+    display: flex;                    /* Enable Flexbox on the header */
+    justify-content: space-between;    /* Distribute space between the left and right sections */
+    align-items: center;   
+    background-color: rgb(6, 66, 43); 
+    padding-inline: 15px;
+}
+
+.header-left {
+    display: flex;  
+    align-items: center;  
+    justify-content: flex-start;
+    padding: 0px;    
+    margin: 0px;   
+}
+
+.header-right {
+    display: flex;
+    justify-content: flex-end;    /* Align child (ul) at the end (right) */
+    align-items: center;  
+    margin: 0px;   
+}
+
+.header-right h6 {
+    margin-right: 1px;  /* Space between text and the next icon */
+    cursor: pointer;
+}
+
+.profile, .cart {
+    margin-left: 10px;  /* Space between icons */
+    cursor: pointer;
+    width: 24px;  /* Icon size */
+}
+
+h1 {
+    font-size: 18px;
+    padding-left: 12px;
+}
+
+p {
+    font-size: 13px;
+    padding-left: 12px;
+    padding-right: 10px;
+}
+
+.dressview {
+    width: 300px;
+    padding-left: 35px;
+}
+
+.dressviewsmall {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;   /* Ensures image fills the circle properly without stretching */
+    border-radius: 50%;  /* Makes the image circular */
+    border: 2px solid lightgrey; /* Adds a light grey border around the image */
+    margin-right: 10px;
+}
+
+.dressviewsmall:hover {
+    border: 2px solid rgb(67, 67, 67);
+}
+
+main {
+    flex-grow: 1; /* Allow the content to take up the remaining space */
+    overflow-y: auto; /* Enable scrolling when content overflows */
+}
+
+.dressframe {
+    padding-left: 12px;
+}
+
+.sizebutton {
+    background-color: white;      /* White background */
+    border: 1px solid rgb(115, 115, 115);      /* Black border, 2px thick */
+    color: rgb(115, 115, 115);                 /* Black text color */
+    font-size: 14px;              /* Adjust text size */
+    padding: 10px 12px;           /* Padding around the text */
+    border-radius: 5px;           /* Optional: round corners for the button */
+    cursor: pointer;             /* Changes the mouse cursor to pointer on hover */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover */
+    margin-right: 10px;
+}
+
+
+.button-group {
+    padding-left: 12px;
+}
+
+/* Hover effect */
+button:hover {
+    background-color: black;      /* Background turns black on hover */
+    color: white;                 /* Text turns white on hover */
+}
+
+.camera {
+    color: white;
+    width: 24px;
+}
+
+.camera-btn {
+    padding: 8px 10px;
+    margin-right: 12px;
+    background-color: rgb(6, 66, 43);
+    border-radius: 5px;           /* Optional: round corners for the button */
+    cursor: pointer;             /* Changes the mouse cursor to pointer on hover */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover */
+}
+
+.camera-btn:hover {
+    background-color: rgb(18, 126, 85)
+}
+
+.size {
+    display: flex;
+    justify-content: space-between; /* Align items horizontally with space between */
+    align-items: center;        /* Align items vertically in the center */
+}
+
+.grey-line {
+    height: 2px;                /* Height of the line */
+    background-color: rgb(205, 204, 204);     /* Color of the line */
+    width: 100%;                /* Make the line span the entire screen */
+    margin: 20px 0;             /* Optional: Adds some space above and below the line */
+}
+
+.deliver-or-pickup {
+    display: flex;              /* Align items horizontally */
+    list-style-type: none;      /* Remove bullet points */
+    padding: 0;                 /* Optional: removes default padding */
+    margin: 0;                  /* Optional: removes default margin */
+    justify-content: center;
+}
+
+/* Style individual items within the .deliver-or-pickup */
+.deliver-or-pickup li {
+    margin-right: 20px;         /* Optional: space between items */
+}
+
+/* Specific style for the .delivery class */
+.delivery {
+    border-bottom: 2px solid darkgreen;  /* Dark green bottom border */
+    border-left: transparent;            /* Transparent left border */
+    border-right: transparent;           /* Transparent right border */
+    border-top: transparent;             /* Transparent top border */
+    color: darkgreen;                    /* Dark green text color */
+    padding: 10px 50px;                       /* Optional: padding for the item */
+}
+
+.pickup {
+    color: rgb(72, 71, 71);                    /* Dark green text color */
+    padding: 10px 50px;   
+}
+
+.delivery-content {
+    padding: 27px;
+}
+
+.p-in-delivery {
+    padding-left: 0;
+}
+
+.deliverying-to {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.location {
+    width: 15px;
+    margin-top: 0;
+    padding: 0;
+}
+
+.p-delivering-to {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0;
+    margin: 0;
+}
+
+h2 {
+    padding: 0;
+    margin: 0;
+}
+
+.cart-btn {
+    background-color: rgb(255, 217, 27);
+    width: 320px;
+    length: 50px;
+    font-size: 14px;            /* Adjust the font size as needed */
+    color: black;               /* Text color */
+    border: none;               /* Removes the default border */
+    border-radius: 50px;         /* Optional: rounded corners for the buttons */
+    cursor: pointer;           /* Adds pointer cursor when hovered */
+    margin-top: 30px;
+    margin-bottom: 10px;
+    justify-content: center;
+}
+
+/* Style for Buy Now button (Orange) */
+.buy-btn {
+    background-color: orange;
+    /* padding: 10px 120px; */
+    width: 320px;
+    length: 50px;
+    font-size: 14px;            /* Adjust the font size as needed */
+    color: black;               /* Text color */
+    border: none;               /* Removes the default border */
+    border-radius: 50px;         /* Optional: rounded corners for the buttons */
+    cursor: pointer;           /* Adds pointer cursor when hovered */
+}
+
+.cart-btn:hover {
+    background-color: rgb(255, 230, 103);
+    color: black;
+}
+
+.buy-btn:hover {
+    background-color: rgb(255, 181, 85);
+    color: black;
+}
