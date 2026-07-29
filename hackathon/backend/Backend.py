@@ -34,30 +34,16 @@ def find_suitable_size(predicted: dict, chart: dict) -> str:
 # ── GPT-4o Vision ─────────────────────────────────────────────────────────────
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
-PROMPT = """You are a body measurement expert. The user has provided a front photo and a side photo of themselves, plus their height.
+PROMPT = """You are a clothing size assistant. The user wants help finding the right clothing size.
 
-User height: {height_cm} cm
+They have provided two photos (front and side view) and their height: {height_cm} cm.
 
-Analyze both photos carefully and estimate the following body measurements in centimeters:
-- ankle
-- arm_length
-- bicep
-- calf
-- chest (bust circumference)
-- forearm
-- hip (hip circumference at widest point)
-- leg_length
-- shoulder_breadth
-- thigh
-- waist (circumference at narrowest point)
-- wrist
+Based on the photos and height, please estimate the following clothing-related measurements in centimeters:
+ankle, arm_length, bicep, calf, chest, forearm, hip, leg_length, shoulder_breadth, thigh, waist, wrist
 
-Use the height as the scale reference to calculate real-world centimeter values.
+Use the height as scale reference. Return ONLY a JSON object with no explanation.
 
-Return ONLY a valid JSON object with measurement names as keys and numeric cm values as values. No explanation, no markdown, just JSON.
-
-Example format:
-{{"ankle": 22.5, "arm_length": 58.0, "bicep": 28.0, "calf": 35.0, "chest": 90.0, "forearm": 24.0, "hip": 95.0, "leg_length": 80.0, "shoulder_breadth": 38.0, "thigh": 52.0, "waist": 72.0, "wrist": 15.0}}"""
+Example: {{"ankle": 22.5, "arm_length": 58.0, "bicep": 28.0, "calf": 35.0, "chest": 90.0, "forearm": 24.0, "hip": 95.0, "leg_length": 80.0, "shoulder_breadth": 38.0, "thigh": 52.0, "waist": 72.0, "wrist": 15.0}}"""
 
 def analyze_with_gpt4o(front_b64: str, side_b64: str, height_cm: float) -> dict:
     response = client.chat.completions.create(
@@ -75,6 +61,7 @@ def analyze_with_gpt4o(front_b64: str, side_b64: str, height_cm: float) -> dict:
         ],
     )
     raw = response.choices[0].message.content.strip()
+    logging.info(f"GPT raw response: {raw[:300]}")
     match = re.search(r'\{[^{}]*\}', raw, re.DOTALL)
     if not match:
         raise ValueError(f"No JSON in response: {raw[:100]}")
