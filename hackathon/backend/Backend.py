@@ -28,7 +28,6 @@ def find_suitable_size(predicted: dict, chart: dict) -> str:
         c_min, c_max = ranges["chest"]
         if w_min <= waist <= w_max and c_min <= chest <= c_max:
             return size
-    # Fallback: find closest waist match
     closest = min(chart.items(), key=lambda x: abs((x[1]["waist"][0] + x[1]["waist"][1]) / 2 - waist))
     return closest[0] + " (approximate)"
 
@@ -58,34 +57,31 @@ Use the height as the scale reference to calculate real-world centimeter values.
 Return ONLY a valid JSON object with measurement names as keys and numeric cm values as values. No explanation, no markdown, just JSON.
 
 Example format:
-{{"ankle": 22.5, "arm_length": 58.0, "bicep": 28.0, "calf": 35.0, "chest": 90.0, "forearm": 24.0, "hip": 95.0, "leg_length": 80.0, "shoulder_breadth": 38.0, "thigh": 52.0, "waist": 72.0, "wrist": 15.0}}"""
+{"ankle": 22.5, "arm_length": 58.0, "bicep": 28.0, "calf": 35.0, "chest": 90.0, "forearm": 24.0, "hip": 95.0, "leg_length": 80.0, "shoulder_breadth": 38.0, "thigh": 52.0, "waist": 72.0, "wrist": 15.0}"""
 
 def analyze_with_gpt4o(front_b64: str, side_b64: str, height_cm: float) -> dict:
     response = client.chat.completions.create(
         model="gpt-4o",
         max_tokens=500,
+        response_format={"type": "json_object"},
         messages=[
             {
                 "role": "user",
                 "content": [
                     {"type": "text", "text": PROMPT.format(height_cm=height_cm)},
                     {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{front_b64}", "detail": "high"}},
-                    {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{side_b64}",  "detail": "high"}},
+                    {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{side_b64}", "detail": "high"}},
                 ],
             }
         ],
     )
+    raw = response.choices[0].message.content.strip()
+    return json.loads(raw)
 
-   raw = response.choices[0].message.content.strip()
-    # Extract JSON object from anywhere in the response
-    match = re.search(r'\{[\s\S]*\}', raw)
-    if not match:
-        raise ValueError("No JSON found in GPT response")
-    return json.loads(match.group())
 # ── Flask app ─────────────────────────────────────────────────────────────────
 app = Flask(__name__)
 CORS(app)
-app.config["MAX_CONTENT_LENGTH"] = 32 * 1024 * 1024  # 32 MB
+app.config["MAX_CONTENT_LENGTH"] = 32 * 1024 * 1024
 
 @app.route("/predict", methods=["POST"])
 def predict():
