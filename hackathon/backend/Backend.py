@@ -62,8 +62,7 @@ Example format:
 def analyze_with_gpt4o(front_b64: str, side_b64: str, height_cm: float) -> dict:
     response = client.chat.completions.create(
         model="gpt-4o",
-        max_tokens=500,
-        response_format={"type": "json_object"},
+        max_tokens=600,
         messages=[
             {
                 "role": "user",
@@ -76,7 +75,10 @@ def analyze_with_gpt4o(front_b64: str, side_b64: str, height_cm: float) -> dict:
         ],
     )
     raw = response.choices[0].message.content.strip()
-    return json.loads(raw)
+    match = re.search(r'\{[^{}]*\}', raw, re.DOTALL)
+    if not match:
+        raise ValueError(f"No JSON in response: {raw[:100]}")
+    return json.loads(match.group())
 
 # ── Flask app ─────────────────────────────────────────────────────────────────
 app = Flask(__name__)
