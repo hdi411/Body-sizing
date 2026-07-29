@@ -57,7 +57,7 @@ Use the height as the scale reference to calculate real-world centimeter values.
 Return ONLY a valid JSON object with measurement names as keys and numeric cm values as values. No explanation, no markdown, just JSON.
 
 Example format:
-{"ankle": 22.5, "arm_length": 58.0, "bicep": 28.0, "calf": 35.0, "chest": 90.0, "forearm": 24.0, "hip": 95.0, "leg_length": 80.0, "shoulder_breadth": 38.0, "thigh": 52.0, "waist": 72.0, "wrist": 15.0}"""
+{{"ankle": 22.5, "arm_length": 58.0, "bicep": 28.0, "calf": 35.0, "chest": 90.0, "forearm": 24.0, "hip": 95.0, "leg_length": 80.0, "shoulder_breadth": 38.0, "thigh": 52.0, "waist": 72.0, "wrist": 15.0}}"""
 
 def analyze_with_gpt4o(front_b64: str, side_b64: str, height_cm: float) -> dict:
     response = client.chat.completions.create(
