@@ -15,8 +15,8 @@
     .phone-frame {
       position: relative;
       width: 100%;
-      max-width: 375px; /* Simulate phone screen size */
-      height: 750px; /* Increased height for larger camera area */
+      max-width: 375px;
+      height: 750px;
       margin: 30px auto;
       background-color: #fff;
       border-radius: 8px;
@@ -27,7 +27,7 @@
     }
 
     .header {
-      background-color: #004b32; /* Deep Amazon green */
+      background-color: #004b32;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -50,17 +50,67 @@
       border-bottom: 1px solid #e6e6e6;
     }
 
+    /* ── Height input step ── */
+    #heightStep {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      padding: 30px 20px;
+      gap: 16px;
+    }
+
+    #heightStep p {
+      font-size: 15px;
+      color: #333;
+      text-align: center;
+      margin: 0;
+    }
+
+    .height-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .height-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .height-box input {
+      width: 70px;
+      padding: 12px 8px;
+      font-size: 22px;
+      text-align: center;
+      border: 2px solid #ffa41c;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .height-box span {
+      font-size: 13px;
+      color: #888;
+    }
+
+    #heightStep .yellow-btn {
+      padding: 12px 40px;
+      font-size: 16px;
+    }
+
+    /* ── Camera area ── */
     #video, #preview {
       width: 100%;
-      height: 550px; /* Enlarged for a bigger camera view */
+      height: 550px;
       object-fit: cover;
       border-bottom: 1px solid #e6e6e6;
       background-color: #f0f0f0;
     }
 
-    #preview {
-      display: none;
-    }
+    #preview { display: none; }
 
     .button-group {
       display: flex;
@@ -75,20 +125,14 @@
       font-weight: bold;
       cursor: pointer;
       border-radius: 4px;
-      background-color: #ffa41c; /* Default Amazon yellow */
+      background-color: #ffa41c;
       color: white;
       transition: background-color 0.3s ease, box-shadow 0.2s ease;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
-    button.upload-btn {
-      background-color: #f3a847; /* Amazon orange */
-    }
-
-    button:hover {
-      background-color: #cc8400; /* Darker tone */
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    }
+    button.upload-btn { background-color: #f3a847; }
+    button:hover { background-color: #cc8400; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
 
     .shutter-btn {
       width: 70px;
@@ -99,62 +143,32 @@
       margin: 20px auto;
       display: block;
       cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
       transition: background-color 0.3s ease, transform 0.2s ease;
     }
 
-    .shutter-btn:hover {
-      background-color: #cc8400;
-      transform: scale(1.1); /* Slight zoom on hover */
-    }
+    .shutter-btn:hover { background-color: #cc8400; transform: scale(1.1); }
 
-    .action-btn {
-      font-size: 14px;
-      font-weight: normal;
-      border-radius: 4px;
-      margin: 0 10px;
-      padding: 8px 16px;
-    }
-
-    .yellow-btn {
-      background-color: #ffa41c; /* Amazon yellow */
-      color: white;
-    }
-
-    .orange-btn {
-      background-color: #f3a847; /* Amazon orange */
-      color: white;
-    }
+    .action-btn { font-size: 14px; font-weight: normal; border-radius: 4px; margin: 0 10px; padding: 8px 16px; }
+    .yellow-btn { background-color: #ffa41c; color: white; }
+    .orange-btn { background-color: #f3a847; color: white; }
 
     .result-container {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: rgba(255, 255, 255, 0.95);
+      bottom: 0; left: 0; right: 0;
+      background: rgba(255,255,255,0.95);
       border-top-left-radius: 15px;
       border-top-right-radius: 15px;
-      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
       max-height: 80vh;
       overflow-y: auto;
       padding: 20px;
-      margin: 0;
       width: 100%;
       box-sizing: border-box;
     }
 
-    .result-container .button-group {
-      margin: 20px 10px;
-      display: flex;
-      justify-content: space-between;
-      gap: 15px;
-    }
-
-    .result-container .button-group button {
-      flex: 1;
-      min-width: 120px;
-      padding: 12px 20px;
-    }
+    .result-container .button-group { margin: 20px 10px; display: flex; justify-content: space-between; gap: 15px; }
+    .result-container .button-group button { flex: 1; min-width: 120px; padding: 12px 20px; }
 
     .measurement-item {
       display: flex;
@@ -164,13 +178,7 @@
       margin: 0 10px;
     }
 
-    .suggested-size {
-      text-align: center;
-      font-size: 18px;
-      font-weight: bold;
-      margin: 15px 10px;
-      color: #004b32;
-    }
+    .suggested-size { text-align: center; font-size: 18px; font-weight: bold; margin: 15px 10px; color: #004b32; }
 
     .error-message {
       color: #d00;
@@ -182,23 +190,15 @@
       display: none;
     }
 
-    .loading {
-      text-align: center;
-      padding: 20px;
-      display: none;
-    }
-
-    .loading:after {
-      content: '...';
-      animation: dots 1s steps(5, end) infinite;
-    }
+    .loading { text-align: center; padding: 20px; display: none; }
+    .loading:after { content: '...'; animation: dots 1s steps(5, end) infinite; }
 
     @keyframes dots {
-      0%, 20% { content: '.'; }
-      40% { content: '..'; }
-      60% { content: '...'; }
-      80% { content: '....'; }
-      100% { content: '.....'; }
+      0%,20% { content: '.'; }
+      40%     { content: '..'; }
+      60%     { content: '...'; }
+      80%     { content: '....'; }
+      100%    { content: '.....'; }
     }
   </style>
 </head>
@@ -210,62 +210,100 @@
     </div>
 
     <!-- Instruction -->
-    <div class="instruction" id="instructionText">Take a front photo</div>
+    <div class="instruction" id="instructionText">Step 1: Enter your height</div>
 
-    <!-- Camera/Preview Area -->
-    <video id="video" autoplay playsinline></video>
+    <!-- ── Height Input Step ── -->
+    <div id="heightStep">
+      <p>Please enter your height so we can calculate accurate measurements.</p>
+      <div class="height-row">
+        <div class="height-box">
+          <input id="heightFeet" type="number" placeholder="5" min="3" max="8" />
+          <span>feet</span>
+        </div>
+        <div class="height-box">
+          <input id="heightInches" type="number" placeholder="7" min="0" max="11" />
+          <span>inches</span>
+        </div>
+      </div>
+      <button class="yellow-btn" onclick="confirmHeight()">Next →</button>
+    </div>
+
+    <!-- Camera / Preview Area (hidden until height confirmed) -->
+    <video id="video" autoplay playsinline style="display:none;"></video>
     <img id="preview" alt="Preview">
-    <canvas id="canvas" style="display: none;"></canvas>
+    <canvas id="canvas" style="display:none;"></canvas>
 
     <!-- Initial Buttons -->
-    <div class="button-group" id="initialButtons">
+    <div class="button-group" id="initialButtons" style="display:none;">
       <button class="yellow-btn" onclick="startCamera()">Take Photo</button>
       <button class="orange-btn" onclick="selectFromFile()">Upload Photo</button>
     </div>
 
     <!-- Shutter Button -->
-    <button id="shutterButton" class="shutter-btn" style="display: none;" onclick="takePhoto()"></button>
+    <button id="shutterButton" class="shutter-btn" style="display:none;" onclick="takePhoto()"></button>
 
     <!-- Action Buttons -->
-    <div class="button-group" id="actionButtons" style="display: none;">
+    <div class="button-group" id="actionButtons" style="display:none;">
       <button class="yellow-btn" onclick="retakePhoto()">Retake</button>
       <button class="orange-btn" onclick="confirmPhoto()">Confirm</button>
     </div>
 
-    <!-- Loading Indicator -->
+    <!-- Loading -->
     <div id="loading" class="loading">Processing</div>
-    
-    <!-- Error Message -->
+
+    <!-- Error -->
     <div id="errorMessage" class="error-message"></div>
-    
-    <!-- Results Container -->
-    <div id="resultContainer" class="result-container">
+
+    <!-- Results -->
+    <div id="resultContainer" class="result-container" style="display:none;">
       <div class="suggested-size">Suggested Size: <span id="suggestedSize"></span></div>
       <div id="measurements"></div>
       <div class="button-group">
         <button class="yellow-btn" onclick="closeResults()">Close Results</button>
-        <button class="orange-btn" onclick="retakePhoto()">Choose Again</button>
+        <button class="orange-btn" onclick="resetAll()">Start Over</button>
       </div>
     </div>
   </div>
 
   <script>
-    const video = document.getElementById('video');
-    const preview = document.getElementById('preview');
-    const canvas = document.getElementById('canvas');
+    const video           = document.getElementById('video');
+    const preview         = document.getElementById('preview');
+    const canvas          = document.getElementById('canvas');
     const instructionText = document.getElementById('instructionText');
-    const initialButtons = document.getElementById('initialButtons');
-    const shutterButton = document.getElementById('shutterButton');
-    const actionButtons = document.getElementById('actionButtons');
-    let photoStep = 'front'; // Current photo step (front or side)
-    let currentPhoto = null; // Current photo data
-    let frontPhoto = null;
-    let sidePhoto = null;
+    const initialButtons  = document.getElementById('initialButtons');
+    const shutterButton   = document.getElementById('shutterButton');
+    const actionButtons   = document.getElementById('actionButtons');
+    const heightStep      = document.getElementById('heightStep');
 
-    // Start camera
+    let photoStep    = 'front';
+    let currentPhoto = null;
+    let frontPhoto   = null;
+    let sidePhoto    = null;
+    let userHeight   = null;   // ← stored after step 1
+
+    // ── Step 1: Confirm height ──────────────────────────────────────────────
+    function confirmHeight() {
+      const feet   = parseFloat(document.getElementById('heightFeet').value);
+      const inches = parseFloat(document.getElementById('heightInches').value) || 0;
+      if (!feet || feet < 3 || feet > 8) {
+        alert('Please enter a valid height (3–8 feet).');
+        return;
+      }
+      if (inches < 0 || inches > 11) {
+        alert('Inches must be between 0 and 11.');
+        return;
+      }
+      // Convert to cm for the backend
+      userHeight = Math.round((feet * 30.48) + (inches * 2.54));
+      heightStep.style.display = 'none';
+      instructionText.textContent = 'Step 2: Take a front photo';
+      initialButtons.style.display = 'flex';
+    }
+
+    // ── Camera ──────────────────────────────────────────────────────────────
     async function startCamera() {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
         video.srcObject = stream;
         video.style.display = 'block';
         preview.style.display = 'none';
@@ -276,15 +314,13 @@
       }
     }
 
-    // Take photo
     function takePhoto() {
-      const context = canvas.getContext('2d');
-      canvas.width = video.videoWidth;
+      const ctx = canvas.getContext('2d');
+      canvas.width  = video.videoWidth;
       canvas.height = video.videoHeight;
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
-      currentPhoto = canvas.toDataURL('image/png'); // Save photo data
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      currentPhoto = canvas.toDataURL('image/jpeg', 0.85);
 
-      // Show preview
       preview.src = currentPhoto;
       preview.style.display = 'block';
       video.style.display = 'none';
@@ -292,91 +328,47 @@
       actionButtons.style.display = 'flex';
     }
 
-    // Select file from local storage
     async function selectFromFile() {
       const input = document.createElement('input');
-      input.type = 'file';
+      input.type   = 'file';
       input.accept = 'image/*';
-      input.onchange = async (event) => {
-        const file = event.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = async (e) => {
-            // 显示预览图片
-            currentPhoto = e.target.result;
-            preview.src = currentPhoto;
-            preview.style.display = 'block';
-            video.style.display = 'none';
-            initialButtons.style.display = 'none';
-            actionButtons.style.display = 'flex';
-
-            try {
-              document.getElementById('loading').style.display = 'block';
-              document.getElementById('errorMessage').style.display = 'none';
-              
-              // 获取base64图片数据并移除头部
-              const imageData = e.target.result.split(',')[1];
-              
-              // 调用后端API
-              const response = await fetch('http://localhost:5000/predict', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  front_image: imageData,
-                  side_image: imageData
-                })
-              });
-
-              const data = await response.json();
-              
-              if (!response.ok) {
-                throw new Error(data.error || 'Processing failed');
-              }
-
-              // 显示结果
-              displayResults(data);
-            } catch (error) {
-              document.getElementById('errorMessage').textContent = error.message;
-              document.getElementById('errorMessage').style.display = 'block';
-            } finally {
-              document.getElementById('loading').style.display = 'none';
-            }
-          };
-          reader.readAsDataURL(file);
-        }
+      input.onchange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          currentPhoto = ev.target.result;
+          preview.src  = currentPhoto;
+          preview.style.display   = 'block';
+          video.style.display     = 'none';
+          initialButtons.style.display = 'none';
+          actionButtons.style.display  = 'flex';
+        };
+        reader.readAsDataURL(file);
       };
       input.click();
     }
 
-    // Retake photo
     function retakePhoto() {
       currentPhoto = null;
       preview.style.display = 'none';
       initialButtons.style.display = 'flex';
-      actionButtons.style.display = 'none';
+      actionButtons.style.display  = 'none';
       document.getElementById('resultContainer').style.display = 'none';
-      document.getElementById('errorMessage').style.display = 'none';
-      
-      // 如果是通过相机拍摄的，则显示相机预览
+      document.getElementById('errorMessage').style.display    = 'none';
       if (video.srcObject) {
-        video.style.display = 'block';
+        video.style.display    = 'block';
         shutterButton.style.display = 'block';
       }
     }
 
-    // Confirm photo
     async function confirmPhoto() {
-      if (!currentPhoto) {
-        showError('Please take or upload a photo first');
-        return;
-      }
+      if (!currentPhoto) { showError('Please take or upload a photo first'); return; }
 
       if (photoStep === 'front') {
         frontPhoto = currentPhoto.split(',')[1];
-        photoStep = 'side';
-        instructionText.textContent = 'Please take a side photo (align your right shoulder)';
+        photoStep  = 'side';
+        instructionText.textContent = 'Step 3: Take a side photo (align your right shoulder)';
         resetToInitialState();
       } else {
         sidePhoto = currentPhoto.split(',')[1];
@@ -384,32 +376,20 @@
       }
     }
 
-    // Reset to initial state
     function resetToInitialState() {
       currentPhoto = null;
-      preview.style.display = 'none';
-      video.style.display = 'none';
-      shutterButton.style.display = 'none';
+      preview.style.display        = 'none';
+      video.style.display          = 'none';
+      shutterButton.style.display  = 'none';
       initialButtons.style.display = 'flex';
-      actionButtons.style.display = 'none';
+      actionButtons.style.display  = 'none';
       document.getElementById('resultContainer').style.display = 'none';
-      document.getElementById('errorMessage').style.display = 'none';
+      document.getElementById('errorMessage').style.display    = 'none';
     }
 
-    // Download photo
-    function downloadPhoto(dataURL, fileName) {
-      const link = document.createElement('a');
-      link.href = dataURL;
-      link.download = fileName;
-      link.click();
-    }
-
-    // 添加发送照片到服务器的函数
+    // ── Send to backend ──────────────────────────────────────────────────────
     async function sendPhotosToServer() {
-      if (!frontPhoto || !sidePhoto) {
-        showError('Both front and side photos are required for analysis');
-        return;
-      }
+      if (!frontPhoto || !sidePhoto) { showError('Both photos are required'); return; }
 
       showLoading(true);
       hideError();
@@ -417,95 +397,72 @@
       try {
         const response = await fetch('http://localhost:5000/predict', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             front_image: frontPhoto,
-            side_image: sidePhoto
-          })
+            side_image:  sidePhoto,
+            height:      userHeight,   // ← send height
+          }),
         });
 
         const data = await response.json();
-        
         if (response.ok) {
           displayResults(data);
         } else {
           showError(data.error || 'Server processing failed');
         }
-      } catch (error) {
+      } catch (err) {
         showError('Network error, please try again later');
-        console.error('Error:', error);
+        console.error(err);
       } finally {
         showLoading(false);
       }
     }
 
-    // 显示结果的函数
+    // ── Display results ──────────────────────────────────────────────────────
     function displayResults(data) {
-      const resultContainer = document.getElementById('resultContainer');
-      const suggestedSize = document.getElementById('suggestedSize');
-      const measurementsDiv = document.getElementById('measurements');
-      
-      // 显示结果，但不隐藏其他元素
-      suggestedSize.textContent = data['Suggested Size'];
-      
-      // 清空并填充测量结果
-      measurementsDiv.innerHTML = '';
-      Object.entries(data['Predicted Measurements']).forEach(([key, value]) => {
-        measurementsDiv.innerHTML += `
+      document.getElementById('suggestedSize').textContent = data['Suggested Size'];
+
+      const div = document.getElementById('measurements');
+      div.innerHTML = '';
+      Object.entries(data['Predicted Measurements']).forEach(([key, val]) => {
+        div.innerHTML += `
           <div class="measurement-item">
-            <span>${key}</span>
-            <span>${value} cm</span>
-          </div>
-        `;
+            <span>${key.replace(/_/g,' ')}</span>
+            <span>${val} cm</span>
+          </div>`;
       });
-      
-      resultContainer.style.display = 'block';
+
+      document.getElementById('resultContainer').style.display = 'block';
     }
 
-    // 工具函数
-    function showError(message) {
-      // 错误消息映射
-      const errorMessages = {
-        '需要正面和侧面照片才能进行分析': 'Both front and side photos are required for analysis',
-        '请先拍照或上传照片': 'Please take or upload a photo first',
-        '处理失败': 'Processing failed',
-        '服务器处理失败': 'Server processing failed',
-        '网络错误，请稍后重试': 'Network error, please try again later'
-      };
-
-      const errorDiv = document.getElementById('errorMessage');
-      // 如果有对应的翻译就使用翻译，否则直接使用传入的消息
-      errorDiv.textContent = errorMessages[message] || message;
-      errorDiv.style.display = 'block';
+    // ── Helpers ──────────────────────────────────────────────────────────────
+    function showError(msg) {
+      const el = document.getElementById('errorMessage');
+      el.textContent = msg;
+      el.style.display = 'block';
     }
 
-    function hideError() {
-      document.getElementById('errorMessage').style.display = 'none';
-    }
+    function hideError() { document.getElementById('errorMessage').style.display = 'none'; }
+    function showLoading(show) { document.getElementById('loading').style.display = show ? 'block' : 'none'; }
+    function closeResults() { document.getElementById('resultContainer').style.display = 'none'; }
 
-    function showLoading(show) {
-      document.getElementById('loading').style.display = show ? 'block' : 'none';
-    }
-
-    // 完全重置函数
     function resetAll() {
-      frontPhoto = null;
-      sidePhoto = null;
-      photoStep = 'front';
-      currentPhoto = null;
-      instructionText.textContent = 'Take a front photo';
+      frontPhoto = sidePhoto = currentPhoto = null;
+      photoStep  = 'front';
+      userHeight = null;
+      instructionText.textContent = 'Step 1: Enter your height';
+      heightStep.style.display         = 'flex';
+      initialButtons.style.display     = 'none';
+      actionButtons.style.display      = 'none';
+      video.style.display              = 'none';
+      preview.style.display            = 'none';
+      shutterButton.style.display      = 'none';
       document.getElementById('resultContainer').style.display = 'none';
       hideError();
-      resetToInitialState();
-    }
-
-    // 添加关闭结果的函数
-    function closeResults() {
-      document.getElementById('resultContainer').style.display = 'none';
+      document.getElementById('heightFeet').value   = '';
+      document.getElementById('heightInches').value = '';
     }
   </script>
 </body>
 </html>
-
