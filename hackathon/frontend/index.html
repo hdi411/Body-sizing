@@ -1,468 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Capture Photos</title>
-  <style>
-    body {
-      font-family: 'Amazon Ember', Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f9f9f9;
-    }
-
-    .phone-frame {
-      position: relative;
-      width: 100%;
-      max-width: 375px;
-      height: 750px;
-      margin: 30px auto;
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .header {
-      background-color: #004b32;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px;
-    }
-
-    .header-title {
-      font-size: 18px;
-      font-weight: bold;
-      color: #ffffff;
-    }
-
-    .instruction {
-      font-size: 15px;
-      font-weight: 500;
-      color: #111111;
-      text-align: center;
-      margin: 10px;
-      padding: 10px 15px;
-      border-bottom: 1px solid #e6e6e6;
-    }
-
-    /* ── Height input step ── */
-    #heightStep {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      flex: 1;
-      padding: 30px 20px;
-      gap: 16px;
-    }
-
-    #heightStep p {
-      font-size: 15px;
-      color: #333;
-      text-align: center;
-      margin: 0;
-    }
-
-    .height-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .height-box {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .height-box input {
-      width: 70px;
-      padding: 12px 8px;
-      font-size: 22px;
-      text-align: center;
-      border: 2px solid #ffa41c;
-      border-radius: 8px;
-      outline: none;
-    }
-
-    .height-box span {
-      font-size: 13px;
-      color: #888;
-    }
-
-    #heightStep .yellow-btn {
-      padding: 12px 40px;
-      font-size: 16px;
-    }
-
-    /* ── Camera area ── */
-    #video, #preview {
-      width: 100%;
-      height: 550px;
-      object-fit: cover;
-      border-bottom: 1px solid #e6e6e6;
-      background-color: #f0f0f0;
-    }
-
-    #preview { display: none; }
-
-    .button-group {
-      display: flex;
-      justify-content: space-around;
-      margin-top: 15px;
-    }
-
-    button {
-      border: none;
-      padding: 10px 20px;
-      font-size: 15px;
-      font-weight: bold;
-      cursor: pointer;
-      border-radius: 4px;
-      background-color: #ffa41c;
-      color: white;
-      transition: background-color 0.3s ease, box-shadow 0.2s ease;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    button.upload-btn { background-color: #f3a847; }
-    button:hover { background-color: #cc8400; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
-
-    .shutter-btn {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      background-color: #ffa41c;
-      border: none;
-      margin: 20px auto;
-      display: block;
-      cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-      transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-
-    .shutter-btn:hover { background-color: #cc8400; transform: scale(1.1); }
-
-    .action-btn { font-size: 14px; font-weight: normal; border-radius: 4px; margin: 0 10px; padding: 8px 16px; }
-    .yellow-btn { background-color: #ffa41c; color: white; }
-    .orange-btn { background-color: #f3a847; color: white; }
-
-    .result-container {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      background: rgba(255,255,255,0.95);
-      border-top-left-radius: 15px;
-      border-top-right-radius: 15px;
-      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-      max-height: 80vh;
-      overflow-y: auto;
-      padding: 20px;
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    .result-container .button-group { margin: 20px 10px; display: flex; justify-content: space-between; gap: 15px; }
-    .result-container .button-group button { flex: 1; min-width: 120px; padding: 12px 20px; }
-
-    .measurement-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid #e6e6e6;
-      margin: 0 10px;
-    }
-
-    .suggested-size { text-align: center; font-size: 18px; font-weight: bold; margin: 15px 10px; color: #004b32; }
-
-    .error-message {
-      color: #d00;
-      text-align: center;
-      padding: 10px;
-      margin: 10px;
-      background-color: #fee;
-      border-radius: 4px;
-      display: none;
-    }
-
-    .loading { text-align: center; padding: 20px; display: none; }
-    .loading:after { content: '...'; animation: dots 1s steps(5, end) infinite; }
-
-    @keyframes dots {
-      0%,20% { content: '.'; }
-      40%     { content: '..'; }
-      60%     { content: '...'; }
-      80%     { content: '....'; }
-      100%    { content: '.....'; }
-    }
-  </style>
-</head>
-<body>
-  <div class="phone-frame">
-    <!-- Header -->
-    <div class="header">
-      <span class="header-title">Photo Capture</span>
-    </div>
-
-    <!-- Instruction -->
-    <div class="instruction" id="instructionText">Step 1: Enter your height</div>
-
-    <!-- ── Height Input Step ── -->
-    <div id="heightStep">
-      <p>Please enter your height so we can calculate accurate measurements.</p>
-      <div class="height-row">
-        <div class="height-box">
-          <input id="heightFeet" type="number" placeholder="5" min="3" max="8" />
-          <span>feet</span>
-        </div>
-        <div class="height-box">
-          <input id="heightInches" type="number" placeholder="7" min="0" max="11" />
-          <span>inches</span>
-        </div>
-      </div>
-      <button class="yellow-btn" onclick="confirmHeight()">Next →</button>
-    </div>
-
-    <!-- Camera / Preview Area (hidden until height confirmed) -->
-    <video id="video" autoplay playsinline style="display:none;"></video>
-    <img id="preview" alt="Preview">
-    <canvas id="canvas" style="display:none;"></canvas>
-
-    <!-- Initial Buttons -->
-    <div class="button-group" id="initialButtons" style="display:none;">
-      <button class="yellow-btn" onclick="startCamera()">Take Photo</button>
-      <button class="orange-btn" onclick="selectFromFile()">Upload Photo</button>
-    </div>
-
-    <!-- Shutter Button -->
-    <button id="shutterButton" class="shutter-btn" style="display:none;" onclick="takePhoto()"></button>
-
-    <!-- Action Buttons -->
-    <div class="button-group" id="actionButtons" style="display:none;">
-      <button class="yellow-btn" onclick="retakePhoto()">Retake</button>
-      <button class="orange-btn" onclick="confirmPhoto()">Confirm</button>
-    </div>
-
-    <!-- Loading -->
-    <div id="loading" class="loading">Processing</div>
-
-    <!-- Error -->
-    <div id="errorMessage" class="error-message"></div>
-
-    <!-- Results -->
-    <div id="resultContainer" class="result-container" style="display:none;">
-      <div class="suggested-size">Suggested Size: <span id="suggestedSize"></span></div>
-      <div id="measurements"></div>
-      <div class="button-group">
-        <button class="yellow-btn" onclick="closeResults()">Close Results</button>
-        <button class="orange-btn" onclick="resetAll()">Start Over</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const video           = document.getElementById('video');
-    const preview         = document.getElementById('preview');
-    const canvas          = document.getElementById('canvas');
-    const instructionText = document.getElementById('instructionText');
-    const initialButtons  = document.getElementById('initialButtons');
-    const shutterButton   = document.getElementById('shutterButton');
-    const actionButtons   = document.getElementById('actionButtons');
-    const heightStep      = document.getElementById('heightStep');
-
-    let photoStep    = 'front';
-    let currentPhoto = null;
-    let frontPhoto   = null;
-    let sidePhoto    = null;
-    let userHeight   = null;   // ← stored after step 1
-
-    // ── Step 1: Confirm height ──────────────────────────────────────────────
-    function confirmHeight() {
-      const feet   = parseFloat(document.getElementById('heightFeet').value);
-      const inches = parseFloat(document.getElementById('heightInches').value) || 0;
-      if (!feet || feet < 3 || feet > 8) {
-        alert('Please enter a valid height (3–8 feet).');
-        return;
-      }
-      if (inches < 0 || inches > 11) {
-        alert('Inches must be between 0 and 11.');
-        return;
-      }
-      // Convert to cm for the backend
-      userHeight = Math.round((feet * 30.48) + (inches * 2.54));
-      heightStep.style.display = 'none';
-      instructionText.textContent = 'Step 2: Take a front photo';
-      initialButtons.style.display = 'flex';
-    }
-
-    // ── Camera ──────────────────────────────────────────────────────────────
-    async function startCamera() {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
-        video.srcObject = stream;
-        video.style.display = 'block';
-        preview.style.display = 'none';
-        initialButtons.style.display = 'none';
-        shutterButton.style.display = 'block';
-      } catch (err) {
-        alert('Unable to access camera: ' + err.message);
-      }
-    }
-
-    function takePhoto() {
-      const ctx = canvas.getContext('2d');
-      canvas.width  = video.videoWidth;
-      canvas.height = video.videoHeight;
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      currentPhoto = canvas.toDataURL('image/jpeg', 0.85);
-
-      preview.src = currentPhoto;
-      preview.style.display = 'block';
-      video.style.display = 'none';
-      shutterButton.style.display = 'none';
-      actionButtons.style.display = 'flex';
-    }
-
-    async function selectFromFile() {
-      const input = document.createElement('input');
-      input.type   = 'file';
-      input.accept = 'image/*';
-      input.onchange = (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          currentPhoto = ev.target.result;
-          preview.src  = currentPhoto;
-          preview.style.display   = 'block';
-          video.style.display     = 'none';
-          initialButtons.style.display = 'none';
-          actionButtons.style.display  = 'flex';
-        };
-        reader.readAsDataURL(file);
-      };
-      input.click();
-    }
-
-    function retakePhoto() {
-      currentPhoto = null;
-      preview.style.display = 'none';
-      initialButtons.style.display = 'flex';
-      actionButtons.style.display  = 'none';
-      document.getElementById('resultContainer').style.display = 'none';
-      document.getElementById('errorMessage').style.display    = 'none';
-      if (video.srcObject) {
-        video.style.display    = 'block';
-        shutterButton.style.display = 'block';
-      }
-    }
-
-    async function confirmPhoto() {
-      if (!currentPhoto) { showError('Please take or upload a photo first'); return; }
-
-      if (photoStep === 'front') {
-        frontPhoto = currentPhoto.split(',')[1];
-        photoStep  = 'side';
-        instructionText.textContent = 'Step 3: Take a side photo (align your right shoulder)';
-        resetToInitialState();
-      } else {
-        sidePhoto = currentPhoto.split(',')[1];
-        await sendPhotosToServer();
-      }
-    }
-
-    function resetToInitialState() {
-      currentPhoto = null;
-      preview.style.display        = 'none';
-      video.style.display          = 'none';
-      shutterButton.style.display  = 'none';
-      initialButtons.style.display = 'flex';
-      actionButtons.style.display  = 'none';
-      document.getElementById('resultContainer').style.display = 'none';
-      document.getElementById('errorMessage').style.display    = 'none';
-    }
-
-    // ── Send to backend ──────────────────────────────────────────────────────
-    async function sendPhotosToServer() {
-      if (!frontPhoto || !sidePhoto) { showError('Both photos are required'); return; }
-
-      showLoading(true);
-      hideError();
-
-      try {
-        const response = await fetch('https://body-sizing.onrender.com', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            front_image: frontPhoto,
-            side_image:  sidePhoto,
-            height:      userHeight,   // ← send height
-          }),
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-          displayResults(data);
-        } else {
-          showError(data.error || 'Server processing failed');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./homepage.css" rel="stylesheet" />
+    <title>Amazon Homepage</title>
+    <style>
+        /* Main container simulating a phone screen */
+        .phone-frame {
+            width: 100%;
+            max-width: 375px; /* Typical mobile screen width */
+            height: 710px; /* Typical mobile screen height */
+            margin: auto;
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
-      } catch (err) {
-        showError('Network error, please try again later');
-        console.error(err);
-      } finally {
-        showLoading(false);
-      }
-    }
 
-    // ── Display results ──────────────────────────────────────────────────────
-    function displayResults(data) {
-      document.getElementById('suggestedSize').textContent = data['Suggested Size'];
+        /* Header */
+        .header {
+      
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+        }
 
-      const div = document.getElementById('measurements');
-      div.innerHTML = '';
-      Object.entries(data['Predicted Measurements']).forEach(([key, val]) => {
-        div.innerHTML += `
-          <div class="measurement-item">
-            <span>${key.replace(/_/g,' ')}</span>
-            <span>${val} cm</span>
-          </div>`;
-      });
+        /* Main Content */
+        .content {
+            flex-grow: 1;  /* Allow the content to take up the remaining space */
+            overflow-y: auto;  /* Make content scrollable */
+            flex-grow: 1;
+            padding: 20px;
+            text-align: center;
+        }
 
-      document.getElementById('resultContainer').style.display = 'block';
-    }
+        /* Button styling */
+        button {
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
 
-    // ── Helpers ──────────────────────────────────────────────────────────────
-    function showError(msg) {
-      const el = document.getElementById('errorMessage');
-      el.textContent = msg;
-      el.style.display = 'block';
-    }
-
-    function hideError() { document.getElementById('errorMessage').style.display = 'none'; }
-    function showLoading(show) { document.getElementById('loading').style.display = show ? 'block' : 'none'; }
-    function closeResults() { document.getElementById('resultContainer').style.display = 'none'; }
-
-    function resetAll() {
-      frontPhoto = sidePhoto = currentPhoto = null;
-      photoStep  = 'front';
-      userHeight = null;
-      instructionText.textContent = 'Step 1: Enter your height';
-      heightStep.style.display         = 'flex';
-      initialButtons.style.display     = 'none';
-      actionButtons.style.display      = 'none';
-      video.style.display              = 'none';
-      preview.style.display            = 'none';
-      shutterButton.style.display      = 'none';
-      document.getElementById('resultContainer').style.display = 'none';
-      hideError();
-      document.getElementById('heightFeet').value   = '';
-      document.getElementById('heightInches').value = '';
-    }
-  </script>
-</body>
+        /* Media Query to ensure mobile view on small screens */
+        @media (max-width: 375px) {
+            .header h1 {
+                font-size: 16px;
+            }
+            .content h2 {
+                font-size: 20px;
+            }
+            .content p {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+    <div class="phone-frame">
+        <header>
+            <nav class="header-left">
+                <svg class="viewmore" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>              
+                <img class="logo" src="./images/amazonlogo.png" alt="logo"/>
+            </nav>
+            <nav class="header-right">
+                <h6> Sign in </h6>
+                <svg class="profile" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                  </svg>
+                  <svg class="cart" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                  </svg>                  
+            </nav>
+        </header>
+        <main>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search...">
+                <button class="search-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" role="img" viewBox="0 0 24 24" width="24" height="24" data-icon="MagnifyingGlassStandard" aria-hidden="true" class="search-icon"><path fill-rule="evenodd" clip-rule="evenodd" d="M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10ZM15.6177 17.0319C14.078 18.2635 12.125 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10C19 12.125 18.2635 14.078 17.0319 15.6177L22.7071 21.2929L21.2929 22.7071L15.6177 17.0319Z" fill="currentColor"></path></svg>
+                </button>
+            </div>
+            <img class="poster" src="./images/Poster.jpg" alt="Poster">
+            <h3>Recommended For You</h3>
+            <div class="recommended-cloths">
+                <button class="product" onclick="window.location.href='NarecteDress.html';">
+                    <img class="Clothing" src="./images/NarecteDress.jpg" alt="logo"/>
+                    <h4>Narecte</h4>
+                    <p>Narecte Summer Dresses for Women</p>
+                    <p>$36.99</p>
+                </button>
+                <button class="product" onclick="window.location.href='ABAFIP.html';">
+                    <img class="Clothing" src="./images/ABAFIP.jpg" alt="logo"/>
+                    <h4>ABAFIP</h4>
+                    <p>ABAFIP Women's Corset Mini Dress</p>
+                    <p>$40.99</p>
+                </button>
+                <button class="product">
+                    <img class="Clothing" src="./images/Peixoto.jpg" alt="logo"/>
+                    <h4>Peixoto</h4>
+                    <p>Peixoto Women's Louisa Crop Top</p>
+                    <p>$61.60</p>
+                </button>
+                <button class="product">
+                    <img class="Clothing" src="./images/BeyondYogaMarmalade.jpg" alt="logo"/>
+                    <h4>Beyond Yoga</h4>
+                    <p>Women's Spacedye Slim Racerback Tank</p>
+                    <p>$33.90 </p>
+                </button>
+                <button class="product" onclick="window.location.href='AmazonEssential.html';">
+                    <img class="Clothing" src="./images/CamelHeather.jpg" alt="logo"/>
+                    <h4>Amazon Essentials</h4>
+                    <p>Amazon Essentials Men's Quarter-Zip French Rib Sweater</p>
+                    <p>$61.60</p>
+                </button>
+                <button class="product">
+                    <img class="Clothing" src="./images/PJApricot.jpg" alt="logo"/>
+                    <h4>PJ Apricot</h4>
+                    <p>PJ PAUL JONES Crewneck Knit Mens Sweater</p>
+                    <p>$39.99</p>
+                </button>
+                <button class="product">
+                    <img class="Clothing" src="./images/SetActive.jpg" alt="logo"/>
+                    <h4>Set Active</h4>
+                    <p>Women's Sportbody Bike Shorts</p>
+                    <p>$65.00</p>
+                </button>
+                <button class="product">
+                    <img class="Clothing" src="./images/DL1961.jpg" alt="logo"/>
+                    <h4>DL1961</h4>
+                    <p>Women's Hepburn Wide Coated Jeans</p>
+                    <p>$239.00</p>
+                </button>
+            </div>
+        </main>
+    </div>
 </html>
