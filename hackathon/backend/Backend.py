@@ -76,12 +76,12 @@ def analyze_with_gpt4o(front_b64: str, side_b64: str, height_cm: float) -> dict:
         ],
     )
 
-    raw = response.choices[0].message.content.strip()
-    # Strip markdown code fences if present
-    raw = re.sub(r"^```(?:json)?\s*", "", raw)
-    raw = re.sub(r"\s*```$", "", raw)
-    return json.loads(raw)
-
+   raw = response.choices[0].message.content.strip()
+    # Extract JSON object from anywhere in the response
+    match = re.search(r'\{[\s\S]*\}', raw)
+    if not match:
+        raise ValueError("No JSON found in GPT response")
+    return json.loads(match.group())
 # ── Flask app ─────────────────────────────────────────────────────────────────
 app = Flask(__name__)
 CORS(app)
