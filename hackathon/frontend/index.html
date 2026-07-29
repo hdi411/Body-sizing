@@ -63,9 +63,7 @@
       <button class="yellow-btn" onclick="startCamera()">Take Photo</button>
       <button class="orange-btn" onclick="selectFromFile()">Upload Photo</button>
     </div>
-
     <button id="shutterButton" class="shutter-btn" style="display:none;" onclick="takePhoto()"></button>
-
     <div class="button-group" id="actionButtons" style="display:none;">
       <button class="yellow-btn" onclick="retakePhoto()">Retake</button>
       <button class="orange-btn" onclick="confirmPhoto()">Confirm</button>
@@ -78,7 +76,7 @@
       <div class="suggested-size">Suggested Size: <span id="suggestedSize"></span></div>
       <div id="measurements"></div>
       <div class="button-group">
-        <button class="yellow-btn" onclick="closeResults()">Close Results</button>
+        <button class="yellow-btn" onclick="closeResults()">Close</button>
         <button class="orange-btn" onclick="resetAll()">Start Over</button>
       </div>
     </div>
@@ -95,6 +93,7 @@
     const heightStep = document.getElementById('heightStep');
 
     let photoStep = 'front', currentPhoto = null, frontPhoto = null, sidePhoto = null, userHeight = null;
+    const product = new URLSearchParams(window.location.search).get('product') || 'default';
 
     function confirmHeight() {
       const feet = parseFloat(document.getElementById('heightFeet').value);
@@ -128,7 +127,7 @@
       actionButtons.style.display = 'flex';
     }
 
-    async function selectFromFile() {
+    function selectFromFile() {
       const input = document.createElement('input');
       input.type = 'file'; input.accept = 'image/*';
       input.onchange = (e) => {
@@ -180,7 +179,7 @@
         const response = await fetch('https://body-sizing.onrender.com/predict', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ front_image: frontPhoto, side_image: sidePhoto, height: userHeight }),
+          body: JSON.stringify({ front_image: frontPhoto, side_image: sidePhoto, height: userHeight, product: product }),
         });
         const data = await response.json();
         if (response.ok) { displayResults(data); }

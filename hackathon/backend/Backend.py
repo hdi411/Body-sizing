@@ -8,25 +8,53 @@ import re
 
 logging.basicConfig(level=logging.INFO)
 
-# ── Size chart ────────────────────────────────────────────────────────────────
-size_chart = {
-    "XX-Small": {"chest": (78.7, 81.3),  "waist": (64.8, 67.3)},
-    "X-Small":  {"chest": (83.8, 86.4),  "waist": (69.8, 72.4)},
-    "Small":    {"chest": (88.9, 94.0),  "waist": (74.9, 80.0)},
-    "Medium":   {"chest": (97.0, 102.9), "waist": (81.9, 87.9)},
-    "Large":    {"chest": (105.9, 111.8),"waist": (90.0, 95.0)},
-    "X-Large":  {"chest": (114.3, 119.4),"waist": (97.8, 102.9)},
-    "XX-Large": {"chest": (121.9, 127.0),"waist": (106.7, 111.8)},
+# ── Size charts ───────────────────────────────────────────────────────────────
+size_charts = {
+    "NarecteDress": {
+        "XS":  {"chest": (80.0, 84.0), "waist": (62.0, 66.0), "hip": (86.0, 90.0)},
+        "S":   {"chest": (84.0, 88.0), "waist": (66.0, 70.0), "hip": (90.0, 94.0)},
+        "M":   {"chest": (88.0, 93.0), "waist": (70.0, 75.0), "hip": (94.0, 99.0)},
+        "L":   {"chest": (93.0, 98.0), "waist": (75.0, 80.0), "hip": (99.0, 104.0)},
+        "XL":  {"chest": (98.0, 104.0),"waist": (80.0, 86.0), "hip": (104.0, 110.0)},
+        "XXL": {"chest": (104.0,110.0),"waist": (86.0, 92.0), "hip": (110.0, 116.0)},
+    },
+    "ABAFIP": {
+        "XS":  {"chest": (76.0, 80.0), "waist": (58.0, 62.0)},
+        "S":   {"chest": (80.0, 84.0), "waist": (62.0, 66.0)},
+        "M":   {"chest": (84.0, 90.0), "waist": (66.0, 72.0)},
+        "L":   {"chest": (90.0, 96.0), "waist": (72.0, 78.0)},
+        "XL":  {"chest": (96.0, 102.0),"waist": (78.0, 84.0)},
+        "XXL": {"chest": (102.0,108.0),"waist": (84.0, 90.0)},
+    },
+    "default": {
+        "XX-Small": {"chest": (78.7, 81.3),  "waist": (64.8, 67.3)},
+        "X-Small":  {"chest": (83.8, 86.4),  "waist": (69.8, 72.4)},
+        "Small":    {"chest": (88.9, 94.0),  "waist": (74.9, 80.0)},
+        "Medium":   {"chest": (97.0, 102.9), "waist": (81.9, 87.9)},
+        "Large":    {"chest": (105.9, 111.8),"waist": (90.0, 95.0)},
+        "X-Large":  {"chest": (114.3, 119.4),"waist": (97.8, 102.9)},
+        "XX-Large": {"chest": (121.9, 127.0),"waist": (106.7, 111.8)},
+    }
 }
 
 def find_suitable_size(predicted: dict, chart: dict) -> str:
     waist = predicted.get("waist", 0)
     chest = predicted.get("chest", 0)
+    hip   = predicted.get("hip", 0)
+
     for size, ranges in chart.items():
         w_min, w_max = ranges["waist"]
         c_min, c_max = ranges["chest"]
-        if w_min <= waist <= w_max and c_min <= chest <= c_max:
+        h_range = ranges.get("hip")
+
+        chest_ok = c_min <= chest <= c_max
+        waist_ok = w_min <= waist <= w_max
+        hip_ok   = (h_range[0] <= hip <= h_range[1]) if h_range and hip > 0 else True
+
+        if chest_ok and waist_ok and hip_ok:
             return size
+
+    # Fallback: closest waist
     closest = min(chart.items(), key=lambda x: abs((x[1]["waist"][0] + x[1]["waist"][1]) / 2 - waist))
     return closest[0] + " (approximate)"
 
@@ -43,14 +71,11 @@ Return ONLY a JSON object. No explanation, no markdown.
 Example: {{"ankle": 22.5, "arm_length": 58.0, "bicep": 28.0, "calf": 35.0, "chest": 90.0, "forearm": 24.0, "hip": 95.0, "leg_length": 80.0, "shoulder_breadth": 38.0, "thigh": 52.0, "waist": 72.0, "wrist": 15.0}}"""
 
 def detect_media_type(b64_string: str) -> str:
-    # Detect image type from first bytes
     import base64
     header = base64.b64decode(b64_string[:16])
     if header[:4] == b'\x89PNG':
         return "image/png"
-    elif header[:2] in (b'\xff\xd8', b'\xff\xe0', b'\xff\xe1'):
-        return "image/jpeg"
-    return "image/jpeg"  # default
+    return "image/jpeg"
 
 def analyze_with_claude(front_b64: str, side_b64: str, height_cm: float) -> dict:
     front_media = detect_media_type(front_b64)
@@ -62,18 +87,9 @@ def analyze_with_claude(front_b64: str, side_b64: str, height_cm: float) -> dict
         messages=[{
             "role": "user",
             "content": [
-                {
-                    "type": "image",
-                    "source": {"type": "base64", "media_type": front_media, "data": front_b64}
-                },
-                {
-                    "type": "image",
-                    "source": {"type": "base64", "media_type": side_media, "data": side_b64}
-                },
-                {
-                    "type": "text",
-                    "text": PROMPT.format(height_cm=height_cm)
-                }
+                {"type": "image", "source": {"type": "base64", "media_type": front_media, "data": front_b64}},
+                {"type": "image", "source": {"type": "base64", "media_type": side_media,  "data": side_b64}},
+                {"type": "text",  "text": PROMPT.format(height_cm=height_cm)},
             ]
         }]
     )
@@ -106,19 +122,22 @@ def predict():
         height_cm = float(data["height"])
         front_b64 = data["front_image"]
         side_b64  = data["side_image"]
+        product   = data.get("product", "default")
 
-        logging.info(f"Received request — height: {height_cm} cm")
+        logging.info(f"Received request — height: {height_cm} cm, product: {product}")
 
+        chart = size_charts.get(product, size_charts["default"])
         measurements = analyze_with_claude(front_b64, side_b64, height_cm)
-        size = find_suitable_size(measurements, size_chart)
+        size = find_suitable_size(measurements, chart)
 
         return jsonify({
             "Predicted Measurements": {k: round(float(v), 1) for k, v in measurements.items()},
             "Suggested Size": size,
+            "Product": product,
         })
 
     except json.JSONDecodeError as e:
-        logging.error(f"Claude returned invalid JSON: {e}")
+        logging.error(f"Invalid JSON from Claude: {e}")
         return jsonify({"error": "Response could not be parsed. Try again."}), 500
     except Exception as e:
         logging.error(f"Error during prediction: {e}", exc_info=True)
