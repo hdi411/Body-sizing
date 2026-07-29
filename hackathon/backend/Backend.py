@@ -1,9 +1,8 @@
 import os
-import base64
 import logging
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from openai import OpenAI
+import anthropic
 import json
 import re
 
@@ -31,38 +30,58 @@ def find_suitable_size(predicted: dict, chart: dict) -> str:
     closest = min(chart.items(), key=lambda x: abs((x[1]["waist"][0] + x[1]["waist"][1]) / 2 - waist))
     return closest[0] + " (approximate)"
 
-# ── GPT-4o Vision ─────────────────────────────────────────────────────────────
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+# ── Claude Vision ─────────────────────────────────────────────────────────────
+client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 
-PROMPT = """You are a clothing size assistant. The user wants help finding the right clothing size.
+PROMPT = """You are a clothing size assistant helping a user find their correct clothing size.
 
-They have provided two photos (front and side view) and their height: {height_cm} cm.
-
-Based on the photos and height, please estimate the following clothing-related measurements in centimeters:
+The user's height is {height_cm} cm. Using the two photos (front and side view) and the height as a scale reference, estimate these measurements in centimeters:
 ankle, arm_length, bicep, calf, chest, forearm, hip, leg_length, shoulder_breadth, thigh, waist, wrist
 
-Use the height as scale reference. Return ONLY a JSON object with no explanation.
+Return ONLY a JSON object. No explanation, no markdown.
 
 Example: {{"ankle": 22.5, "arm_length": 58.0, "bicep": 28.0, "calf": 35.0, "chest": 90.0, "forearm": 24.0, "hip": 95.0, "leg_length": 80.0, "shoulder_breadth": 38.0, "thigh": 52.0, "waist": 72.0, "wrist": 15.0}}"""
 
-def analyze_with_gpt4o(front_b64: str, side_b64: str, height_cm: float) -> dict:
-    response = client.chat.completions.create(
-        model="gpt-4o",
-        max_tokens=600,
-        messages=[
-            {
-                "role": "user",
-                "content": [
-                    {"type": "text", "text": PROMPT.format(height_cm=height_cm)},
-                    {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{front_b64}", "detail": "high"}},
-                    {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{side_b64}", "detail": "high"}},
-                ],
-            }
-        ],
+def detect_media_type(b64_string: str) -> str:
+    # Detect image type from first bytes
+    import base64
+    header = base64.b64decode(b64_string[:16])
+    if header[:4] == b'\x89PNG':
+        return "image/png"
+    elif header[:2] in (b'\xff\xd8', b'\xff\xe0', b'\xff\xe1'):
+        return "image/jpeg"
+    return "image/jpeg"  # default
+
+def analyze_with_claude(front_b64: str, side_b64: str, height_cm: float) -> dict:
+    front_media = detect_media_type(front_b64)
+    side_media  = detect_media_type(side_b64)
+
+    response = client.messages.create(
+        model="claude-opus-4-5",
+        max_tokens=800,
+        messages=[{
+            "role": "user",
+            "content": [
+                {
+                    "type": "image",
+                    "source": {"type": "base64", "media_type": front_media, "data": front_b64}
+                },
+                {
+                    "type": "image",
+                    "source": {"type": "base64", "media_type": side_media, "data": side_b64}
+                },
+                {
+                    "type": "text",
+                    "text": PROMPT.format(height_cm=height_cm)
+                }
+            ]
+        }]
     )
-    raw = response.choices[0].message.content.strip()
-    logging.info(f"GPT raw response: {raw[:300]}")
-    match = re.search(r'\{[^{}]*\}', raw, re.DOTALL)
+
+    raw = response.content[0].text.strip()
+    logging.info(f"Claude raw response: {raw[:300]}")
+
+    match = re.search(r'\{[\s\S]*\}', raw)
     if not match:
         raise ValueError(f"No JSON in response: {raw[:100]}")
     return json.loads(match.group())
@@ -90,7 +109,7 @@ def predict():
 
         logging.info(f"Received request — height: {height_cm} cm")
 
-        measurements = analyze_with_gpt4o(front_b64, side_b64, height_cm)
+        measurements = analyze_with_claude(front_b64, side_b64, height_cm)
         size = find_suitable_size(measurements, size_chart)
 
         return jsonify({
@@ -99,13 +118,13 @@ def predict():
         })
 
     except json.JSONDecodeError as e:
-        logging.error(f"GPT returned invalid JSON: {e}")
-        return jsonify({"error": "GPT response could not be parsed. Try again."}), 500
+        logging.error(f"Claude returned invalid JSON: {e}")
+        return jsonify({"error": "Response could not be parsed. Try again."}), 500
     except Exception as e:
         logging.error(f"Error during prediction: {e}", exc_info=True)
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    if not os.environ.get("OPENAI_API_KEY"):
-        raise RuntimeError("Set OPENAI_API_KEY environment variable before running.")
+    if not os.environ.get("ANTHROPIC_API_KEY"):
+        raise RuntimeError("Set ANTHROPIC_API_KEY environment variable before running.")
     app.run(debug=True, host="0.0.0.0", port=5000)

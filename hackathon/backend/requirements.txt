@@ -1,5 +1,5 @@
 flask
 flask-cors
-openai
+anthropic
 pillow
 gunicorn
